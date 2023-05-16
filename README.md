@@ -14,7 +14,7 @@ The page is about setting up a local development environment as well as project 
 ![1](wiki/uploads/0c17f052d5082ca3564906f6506b679d/1.png)
 
 - Data for `.env` in Slack api App  
-![2](wiki/uploads/bf74b16d0cb2f1acca18e7110878b212/2.png)
+![2](wiki/uploads/bf74b16d0cb2f1acca18e7110878b212/123.png)
 
 - Connect ngrok and Slack   
 ![3](wiki/uploads/4c181c5ef14dc12645c0cbfacf61c8be/3.png)
