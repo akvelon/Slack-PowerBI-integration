@@ -1,0 +1,17 @@
+version: 0.0
+
+os: 'linux'
+
+files:
+  - source: './'
+    destination: '/opt/spbi-bot/'
+
+hooks:
+  ApplicationStart:
+    - location: './start-bot.bash'
+      timeout: 300
+      runas: root
+  ApplicationStop:
+    - location: './stop-bot.bash'
+      timeout: 300
+      runas: root

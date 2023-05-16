@@ -1,0 +1,22 @@
+version: "3.9"
+services:
+  spbibot:
+    image: 
+    ports:
+      - "8080:80"
+    restart: always
+    volumes:
+      - ./env:/app/env
+  report-engine:
+    image: 
+    restart: always
+    volumes:
+      - ./env:/app/env
+  nginx:
+    image: nginx
+    restart: always
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d

@@ -1,0 +1,27 @@
+linters:
+  disable-all: true
+  enable:
+    - depguard
+    - dogsled
+    - errcheck
+    - exportloopref
+    - gochecknoinits
+    - goconst
+    - gofmt
+    - goimports
+    - golint
+    - goprintffuncname
+    - gosimple
+    - govet
+    - misspell
+    - nakedret
+    - nolintlint
+    - stylecheck
+    - typecheck
+    - unconvert
+    - varcheck
+    - whitespace
+
+run:
+  skip-dirs:
+    - db/migrations

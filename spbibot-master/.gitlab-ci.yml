@@ -1,0 +1,99 @@
+stages:
+  - build
+  - staging
+  - production
+# Ref: https://docs.gitlab.com/ee/ci/yaml/#includefile
+include:
+  - project: "templates/pipeline"
+    ref: v1.0.4
+    file:
+      - "/build/kaniko.yaml"
+      - "/deploy/helm.yaml"
+
+
+# build:test:no-push:
+#   extends: .kaniko
+#   variables:
+#     KANIKO_ARGS_PUSH: "--no-push"
+#   rules:
+#       - if: "$CI_PIPELINE_SOURCE == 'merge_request_event'"
+
+build:push:
+  extends: .kaniko
+  # rules:
+  #   - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
+
+# Declaration of the items same for all the deploy jobs
+.deploy:
+  variables:
+    HELM_CHART_PATH: deploy/helm/spbibot
+    HELM_RELEASE_NAME: ${CI_PROJECT_NAME}
+    HELM_ARGS_IMAGE: >
+      --set image.repository=$CI_REGISTRY_IMAGE
+      --set image.tag=$CI_COMMIT_SHA
+      --set imageCredentials.registry=$CI_REGISTRY
+      --set imageCredentials.username=$CI_DEPLOY_USER
+      --set imageCredentials.password=$CI_DEPLOY_PASSWORD
+    HELM_EXTRA_ARGS: >
+      --debug
+
+
+
+prepare-stage-variables:
+  stage: staging
+  environment:
+    name: stage
+  script:
+    - echo "Set enviroment variables to a file"
+    - cp $STAGE_CONFIG  deploy/helm/spbibot/base.env
+  artifacts:
+    paths:
+      - deploy/helm/spbibot/base.env
+    expire_in: 1 hour
+
+deploy:stage:
+  needs: ["prepare-stage-variables"]
+  extends: .deploy
+  stage: staging
+  environment:
+    name: stage
+    url:
+  variables:
+    ENV: $STAGE_CONFIG
+    HELM_NAMESPACE: powerbiintegration-71-stage
+    HELM_ARGS_VALUES: >
+     -f deploy/helm/spbibot/values.stage.yaml
+
+
+prepare-prod-variables:
+  stage: production
+  environment:
+    name: production
+  script:
+    - echo "Set enviroment variables to a file"
+    - cp $PRODUCTION_CONFIG  deploy/helm/spbibot/base.env
+  artifacts:
+    paths:
+      - deploy/helm/spbibot/base.env
+    expire_in: 1 hour
+
+  rules:
+    - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
+
+
+deploy:prod:
+  needs: ["prepare-prod-variables"]
+  extends: .deploy
+  stage: production
+  environment:
+    name: production
+    url: 
+
+  variables:
+    HELM_NAMESPACE: powerbiintegration-71
+    HELM_ARGS_VALUES: >
+     -f deploy/helm/spbibot/values.prod.yaml
+
+  rules:
+    - if: "$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH"
+      when: manual

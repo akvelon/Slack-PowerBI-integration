@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="description" content="Share your Power BI reports directly to Slack">
+  <meta name="keywords"
+    content="slack integration, power bi integration, slack power bi integration, slack bot, share reports to slack">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="msapplication-TileColor" content="#da532c" />
+  <meta name="theme-color" content="#ffffff" />
+  <title>Analytics Slack Integration</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" />
+  <link rel="apple-touch-icon" sizes="180x180" href="static/favicon/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="static/favicon/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="static/favicon/favicon-16x16.png" />
+  <link rel="manifest" href="static/favicon/site.webmanifest" />
+  <link rel="mask-icon" href="static/favicon/safari-pinned-tab.svg" color="#5bbad5" />
+  <link rel="stylesheet" href="./style.css" />
+  <script type="text/javascript">
+    (function (e, t) {
+      var n = e.amplitude || {
+        _q: [],
+        _iq: {}
+      };
+      var r = t.createElement("script");
+      r.type = "text/javascript";
+      r.integrity = "sha384-girahbTbYZ9tT03PWWj0mEVgyxtZoyDF9KVZdL+R53PP5wCY0PiVUKq0jeRlMx9M";
+      r.crossOrigin = "anonymous";
+      r.async = true;
+      r.src = "https://cdn.amplitude.com/libs/amplitude-7.2.1-min.gz.js";
+      r.onload = function () {
+        if (!e.amplitude.runQueuedFunctions) {
+          console.log("[Amplitude] Error: could not load SDK")
+        }
+      };
+      var i = t.getElementsByTagName("script")[0];
+      i.parentNode.insertBefore(r, i);
+
+      function s(e, t) {
+        e.prototype[t] = function () {
+          this._q.push([t].concat(Array.prototype.slice.call(arguments, 0)));
+          return this
+        }
+      }
+      var o = function () {
+        this._q = [];
+        return this
+      };
+      var a = ["add", "append", "clearAll", "prepend", "set", "setOnce", "unset"];
+      for (var c = 0; c < a.length; c++) {
+        s(o, a[c])
+      }
+      n.Identify = o;
+      var u = function () {
+        this._q = [];
+        return this
+      };
+      var l = ["setProductId", "setQuantity", "setPrice", "setRevenueType", "setEventProperties"];
+      for (var p = 0; p < l.length; p++) {
+        s(u, l[p])
+      }
+      n.Revenue = u;
+      var d = ["init", "logEvent", "logRevenue", "setUserId", "setUserProperties", "setOptOut", "setVersionName",
+        "setDomain", "setDeviceId", "enableTracking", "setGlobalUserProperties", "identify", "clearUserProperties",
+        "setGroup", "logRevenueV2", "regenerateDeviceId", "groupIdentify", "onInit", "logEventWithTimestamp",
+        "logEventWithGroups", "setSessionId", "resetSessionId"
+      ];
+
+      function v(e) {
+        function t(t) {
+          e[t] = function () {
+            e._q.push([t].concat(Array.prototype.slice.call(arguments, 0)))
+          }
+        }
+        for (var n = 0; n < d.length; n++) {
+          t(d[n])
+        }
+      }
+      v(n);
+      n.getInstance = function (e) {
+        e = (!e || e.length === 0 ? "$default_instance" : e).toLowerCase();
+        if (!n._iq.hasOwnProperty(e)) {
+          n._iq[e] = {
+            _q: []
+          };
+          v(n._iq[e])
+        }
+        return n._iq[e]
+      };
+      e.amplitude = n
+    })(window, document);
+
+    amplitude.getInstance().init("");
+
+    function logAmplitudeEvent(event) {
+      amplitude.getInstance().logEvent(event);
+    }
+
+    logAmplitudeEvent('PBIlandingVisited');
+  </script>
+  <script>
+    function installIntegration() {
+      logAmplitudeEvent('PBIlandingIntegrationInstalled')
+      openLinkInNewTab("");
+    };
+
+    function openLinkInNewTab(url) {
+      var win = window.open(url, '_blank');
+      win.focus();
+    };
+
+    function showYoutubeVideoModal(url) {
+      logAmplitudeEvent('PBIlandingYoutubeVideoShown');
+      if (window.innerWidth < 1000) {
+        var win = window.open(url, '_blank');
+        return;
+      }
+
+      var frame = document.getElementById('youtubevideoframe');
+      frame.setAttribute('src', url);
+      setTimeout(() => {
+        var modal = document.getElementById("watchYoutubeVideoModal");
+        modal.style.display = "block";
+      }, 200);
+    };
+
+    function closeYoutubeVideoModal() {
+      var modal = document.getElementById("watchYoutubeVideoModal");
+      modal.style.display = "none";
+      var frame = document.getElementById('youtubevideoframe');
+      frame.setAttribute('src', '');
+    };
+
+    document.addEventListener('keydown', function (evt) {
+      evt = evt || window.event;
+      var isEscape = false;
+      if ("key" in evt) {
+        isEscape = (evt.key === "Escape" || evt.key === "Esc");
+      } else {
+        isEscape = (evt.keyCode === 27);
+      }
+      if (isEscape) {
+        closeYoutubeVideoModal();
+      }
+    });
+  </script>
+</head>
+
+<body>
+  <div class="main">
+    <div class="infoMainContainer flexContainer">
+      <div class="infoMainDescription">
+        <h1>Power BI</h1>
+        <div class="infoIntegration">
+          <div class="flexRow slackLogoRow">
+            <img src="./assets/slackLogo.svg" class="slackLogoMain" alt="Slack Logo" />
+            <h3>Slack integration</h3>
+          </div>
+          <h5>Share your Power BI reports directly to Slack</h5>
+        </div>
+
+        <div class="addToSlackButton" onclick="installIntegration()">
+          <div class="flexRow">
+            <img src="./assets/slackLogo.svg" class="addToSlackButtonSlackLogo" alt="Add To Slack" />
+            <p>Add to Slack</p>
+          </div>
+        </div>
+      </div>
+      <div class="mainIllustration">
+        <img src="./assets/illustration.svg" alt="Main Illustration" />
+      </div>
+    </div>
+    <div class="featuresContainer flexContainer">
+      <div class="featureDescription">
+        <img src="./assets/sharingReports.svg" alt="Sharing Reports" />
+        <h2>Sharing reports</h2>
+        <p>
+          You can share the Power BI reports to the Slack channel (either
+          public or private) right from the Slack admin area without switching
+          to a Power BI account.
+        </p>
+      </div>
+      <div class="featureDescription">
+        <img src="./assets/schedulingReports.svg" alt="Scheduling Reports" />
+        <h2>Scheduling reports</h2>
+        <p>
+          This feature fits those who would like to have the report set up and
+          sent to Slack channel by a particular date and time on a regular
+          basis (daily, weekly, monthly).
+        </p>
+      </div>
+      <div class="featureDescription">
+        <img src="./assets/alertingReports.svg" alt="Alerting Reports" />
+        <h2>Alerting reports</h2>
+        <p>
+          Having a crucial metric to be checked regularly? Set up an alert and
+          you’ll receive a notification when this metric reaches a particular
+          value, you can also set up a frequency of alerts.
+        </p>
+      </div>
+      <div class="featureDescription">
+        <img src="./assets/filteringReports.svg" alt="Filtering Reports" />
+        <h2>Filtering data in reports</h2>
+        <p>
+          If you want to share a particular piece of stats to Slack channel,
+          you can apply advanced filters before the report sharing so only
+          required data will be sent.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="guide">
+    <h2 class="guideTitle">Step by step Guide</h2>
+    <div class="guideRow flexContainer">
+      <img src="./assets/guide/connectAccount.svg" alt="Connect Account" />
+      <div class="guideDescription guideDescriptionRight">
+        <img src="./assets/guide/one.svg" class="guideNumberRight" alt="First Step" />
+        <h2>Connect your Power BI account</h2>
+        <ul>
+          <li>
+            <p>
+              Install the plugin from
+              <a href="" target="_blank"
+                rel="noopener">Slack App Directory</a>
+            </p>
+          </li>
+          <li>
+            <p>
+              Sign in to Power BI using Home tab or command
+              <b><i>/pbi-sign-in</i></b>. Use your Power BI credentials
+            </p>
+          </li>
+          <li>
+            <p>
+              You can disconnect your Power BI account anytime, just go to
+              “Disconnect Power BI account” and confirm you want to disconnect
+              this. You won’t be able to share and receive reports unless the
+              account connected again
+            </p>
+          </li>
+        </ul>
+        <div class="youtubeButton" onclick="showYoutubeVideoModal('https://www.youtube.com/embed/67PINefU3-I')">
+          <div class="flexRow">
+            <img src="./assets/guide/youtube.svg" alt="Youtube Button" />
+            <h4>Watch the tutorial</h4>
+          </div>
+        </div>
+        </a>
+      </div>
+    </div>
+    <div class="guideRow flexContainer">
+      <div class="guideDescription">
+        <img src="./assets/guide/two.svg" class="guideNumberRight" alt="Step Two" />
+        <h2>Share Power BI report to Slack channel</h2>
+        <ul>
+          <li>
+            <p>
+              Invite Power BI Integration bot to public or private channel
+            </p>
+          </li>
+          <li>
+            <p>
+              Go to Power BI integration in Apps and choose "Share a report"
+            </p>
+          </li>
+          <li>
+            <p>
+              Choose a report, pages and channel from drop-down lists
+            </p>
+          </li>
+          <li>
+            <p>
+              Click Ok
+            </p>
+          </li>
+        </ul>
+        <div class="youtubeButton" onclick="showYoutubeVideoModal('https://www.youtube.com/embed/o7qDjg4aXKk')">
+          <div class="flexRow">
+            <img src="./assets/guide/youtube.svg" alt="Youtube Button" />
+            <h4>Watch the tutorial</h4>
+          </div>
+        </div>
+        </a>
+      </div>
+      <img src="./assets/guide/shareReport.svg" class="guideDescriptionRight" alt="Sharing Report Step" />
+    </div>
+    <div class="guideRow flexContainer">
+      <img src="./assets/guide/applyFilter.svg" alt="Apply Filter" />
+      <div class="guideDescription guideDescriptionRight">
+        <img src="./assets/guide/three.svg" class="guideNumberRight" alt="Step Three" />
+        <h2>Apply filters before sharing a report</h2>
+        <ul>
+          <li>
+            <p>
+              Repeat steps for sharing a report but before leaving the form, tick the checkbox "Apply filter"
+            </p>
+          </li>
+          <li>
+            <p>
+              You can now choose filters like table, column names and values
+            </p>
+          </li>
+          <li>
+            <p>
+              Beside basic filters, you can utilize advanced filters which are in the bottom of filter form
+            </p>
+            <div class="note">
+              <p>Please note: you should copy table, column and other parameters names from Power BI. so in the filter
+                form they will be named accordingly</p>
+            </div>
+          </li>
+          <li>
+            <p>
+              Anytime you fill out the filter form you can save it for further usage in case you need to apply the same
+              filters each time
+            </p>
+          </li>
+          <li>
+            <p>
+              You can update or delete filters in “Manage filters” section or through the command /pbi-manage-filters
+            </p>
+          </li>
+        </ul>
+        <div class="youtubeButton" onclick="showYoutubeVideoModal('https://www.youtube.com/embed/87ThavZvc8k')">
+          <div class="flexRow">
+            <img src="./assets/guide/youtube.svg" alt="Youtube Button" />
+            <h4>Watch the tutorial</h4>
+          </div>
+        </div>
+        </a>
+      </div>
+    </div>
+    <div class="guideRow flexContainer">
+      <div class="guideDescription">
+        <img src="./assets/guide/four.svg" class="guideNumberRight" alt="Step Four" />
+        <h2>Schedule recurring report </h2>
+        <ul>
+          <li>
+            <p>
+              Invite Power BI Integration bot to a public or private channel
+            </p>
+          </li>
+          <li>
+            <p>
+              Go to the “Schedule report” section or through the command <b><i>/pbi-schedule-report</i></b>
+            </p>
+          </li>
+          <li>
+            <p>
+              Choose report, pages and channel, then specify periodicity and time of the report
+            </p>
+          </li>
+          <li>
+            <p>
+              You can stop, resume or delete scheduled reports in the "Manage scheduled reports" section
+            </p>
+          </li>
+        </ul>
+        <div class="youtubeButton" onclick="showYoutubeVideoModal('https://www.youtube.com/embed/2jdtB7b6RPs')">
+          <div class="flexRow">
+            <img src="./assets/guide/youtube.svg" alt="Youtube Button" />
+            <h4>Watch the tutorial</h4>
+          </div>
+        </div>
+        </a>
+      </div>
+      <img src="./assets/guide/scheduleReport.svg" class="guideDescriptionRight" alt="Schedule Report" />
+    </div>
+    <div class="guideRow flexContainer">
+      <img src="./assets/guide/manageAlerts.svg" alt="Manage Alerts" />
+      <div class="guideDescription guideDescriptionRight">
+        <img src="./assets/guide/five.svg" class="guideNumberRight" alt="Step Five" />
+        <h2>Create and manage alerts</h2>
+        <ul>
+          <li>
+            <p>
+              Go to "Create an alert" section or through the command /pbi-manage-scheduled-reports
+            </p>
+          </li>
+          <li>
+            <p>
+              Choose report and channel, then specify the visual title, condition, value and frequency of alerts
+            </p>
+          </li>
+          <li>
+            <p>
+              You can stop, resume or delete alerts using the "Manage alerts" button or through the command
+              <b><i>/pbi-manage-alerts</i></b>
+            </p>
+          </li>
+        </ul>
+        <div class="youtubeButton" onclick="showYoutubeVideoModal('https://www.youtube.com/embed/SXlRJfEq4wg')">
+          <div class="flexRow">
+            <img src="./assets/guide/youtube.svg" alt="Youtube Button" />
+            <h4>Watch the tutorial</h4>
+          </div>
+        </div>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="shareFooter">
+    <center>
+      <p class="shareFooterDescription">
+        Share your Power BI reports directly to Slack
+      </p>
+      <div class="addToSlackButton addToSlackButtonDark" onclick="installIntegration()">
+        <div class="flexRow">
+          <img src="./assets/slackLogo.svg" class="addToSlackButtonSlackLogo" alt="Add To Slack" />
+          <p>Add to Slack</p>
+        </div>
+      </div>
+    </center>
+  </div>
+  <div class="footer">
+    <div class="flexContainer footerContainer">
+      <div class="footerLinksContainer">
+        <a href="./privacy-policy" class="link">Privacy Policy</a>
+        <a href="./terms-and-conditions">Terms & Conditions</a>
+      </div>
+      <img src="./assets/logoDark.svg" class="footerLogo" alt=""
+        onclick="openLinkInNewTab(``)" />
+      <div class="footerLinksContainer">
+        <a class="contact" href="">
+          Contact us: <b></b></a>
+      </div>
+    </div>
+  </div>
+  <div class="footerMobile">
+    <img src="./assets/logoDark.svg" alt="" class="footerLogoMobile"
+      onclick="openLinkInNewTab(``)" />
+  </div>
+  <div id="watchYoutubeVideoModal" class="modal" onclick="closeYoutubeVideoModal()">
+    <div class="modal-content">
+      <span onclick="closeYoutubeVideoModal()" class="close">&times;</span>
+      <iframe id="youtubevideoframe" width="560" height="315" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen></iframe>
+    </div>
+  </div>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+</body>
+
+</html>

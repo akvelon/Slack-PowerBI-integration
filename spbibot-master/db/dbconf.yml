@@ -1,0 +1,6 @@
+development:
+  driver: mysql
+  open: root:${DB_USERNAME_PWD}@tcp(localhost:3306)/spbibot?parseTime=true
+production:
+  driver: mysql
+  open: $PRODUCTION_DB_CONNECTION_STRING

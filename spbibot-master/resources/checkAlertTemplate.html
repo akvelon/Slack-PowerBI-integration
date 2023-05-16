@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+    <div id="reportContainer" style="width: 1980px; height: 1080px;"></div>
+    <div id="done" style="display: none"></div>
+    <script src="../resources/powerbi.min.js"></script>
+    <script>
+        const options = {{options}};
+
+        // Get models. models contains enums that can be used.
+        const models = window['powerbi-client'].models;
+
+        const embedConfiguration = {
+            settings: {
+                panes: {
+                    filters: {
+                        visible: false
+                    }
+                }
+            },
+            type: 'report',
+            id: options.reportId,
+            embedUrl: 'https://app.powerbi.com/reportEmbed',
+            tokenType: models.TokenType.Aad,
+            accessToken: options.accessToken
+        };
+
+        const $reportContainer = document.getElementById('reportContainer');
+        const report = powerbi.embed($reportContainer, embedConfiguration);
+        const reportErrorIndicator = "reportError_"
+        const alertAnalysisIndicator = "alertAnalysis_"
+
+        report.on('error', (event) => {
+            const errorMessage = event && event.detail && event.detail.message
+            console.error(`${reportErrorIndicator}${errorMessage}`);
+        })
+
+        report.on('loaded', async () => {
+            try {
+                const visualData = await getVisualData(options.visualName)
+
+                console.info(`${alertAnalysisIndicator}${visualData}`);
+            } catch (e) {
+                console.error(`${alertAnalysisIndicator}${e && e.message}`);
+            }
+        });
+
+        report.on('rendered', () => {
+            document.getElementById('done').style.display = "block";
+            // console.log("reportRendered_");
+        })
+
+        async function getVisualData(visualName) {
+            const pages = await report.getPages();
+            const activePage = pages[0]; // TODO: We only consider the first page of a report.
+            const visuals = await activePage.getVisuals();
+            const focusedVisual = visuals.find(visual => visual.title === visualName);
+
+            if (!focusedVisual) {
+                throw new Error('No visual with such name')
+            }
+
+            const dataSet = await focusedVisual.exportData(models.ExportDataType.Summarized);
+            const visualData = dataSet.data.split('\r\n')[1]; // [0] - column name, [1] - column value
+
+            return visualData;
+        }
+    </script>
+</body>
+
+</html>

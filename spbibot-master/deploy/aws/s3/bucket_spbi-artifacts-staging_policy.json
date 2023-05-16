@@ -1,0 +1,21 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "*",
+      "Condition": {
+        "StringEquals": {
+          "s3:DataAccessPointAccount": ""
+        }
+      },
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "*"
+      },
+      "Resource": [
+        "arn:aws:s3:::spbi-artifacts-staging",
+        "arn:aws:s3:::spbi-artifacts-staging/*"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+
+        <meta content="initial-scale=1, width=device-width" name="viewport">
+
+        <style>
+            body {
+                margin: 0;
+            }
+
+            #embedding-host {
+                height: 100vh;
+            }
+
+            #embedding-host iframe {
+                border: none;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="embedding-host"></div>
+
+        <script src="../resources/powerbi.min.js"></script>
+
+        <script>
+            console.log('started');
+
+            const PbiClient = window['powerbi-client'];
+            const PbiService = window.powerbi;
+
+            const reportRenderer = {
+                initialize() {
+                    console.log('initializing');
+
+                    this.embedHost = document.getElementById('embedding-host');
+                    if (!this.embedHost) {
+                        throw new Error('embedding host not found');
+                    }
+
+                    console.log('initialized');
+                },
+
+                addConfig(newConfig) {
+                    console.log('adding config');
+
+                    this.config = {
+                        ...this.config,
+                        ...newConfig,
+                    };
+
+                    console.log('added config');
+                },
+
+                async loadReport() {
+                    console.log('loading report');
+
+                    const load = new Promise((resolve, reject) => {
+                        let report;
+                        try {
+                            report = PbiService.load(this.embedHost, this.config);
+                        } catch (reason) {
+                            reject(reason);
+
+                            return;
+                        }
+
+                        report.on('error', event => {
+                            report.off('error');
+                            report.off('loaded');
+
+                            reject(event.detail);
+                        });
+
+                        report.on('loaded', () => {
+                            report.off('loaded');
+                            report.off('error');
+
+                            resolve(report);
+                        });
+                    });
+
+                    try {
+                        this.report = await load;
+                        console.log(this.report)
+                    } catch (reason) {
+                        console.log('error', reason);
+
+                        throw reason;
+                    }
+
+                    try {
+                        this.pages = await this.report.getPages();
+                    } catch (reason) {
+                        console.log('error', reason);
+
+                        throw reason;
+                    }
+
+                    console.log('loaded report');
+                },
+
+                async setPage(pageId) {
+                    console.log('setting page');
+
+                    if (!this.pages) {
+                        throw new Error('no pages to set');
+                    }
+
+                    const activePage = this.pages.find(_ => _.name === pageId);
+                    if (!activePage) {
+                        throw new Error(`page ${pageId} not found`);
+                    }
+
+                    try {
+                        if (!activePage.isActive) {
+                            await activePage.setActive();
+                        }
+
+                        this.activePage = activePage;
+                    } catch (reason) {
+                        console.log('error', reason);
+
+                        throw reason;
+                    }
+
+                    console.log('set page');
+                },
+
+                async renderReport()
+                {
+                    console.log('rendering report');
+
+                    if (!this.report) {
+                        throw new Error('no report to render');
+                    }
+
+                    const complete = new Promise((resolve, reject) => {
+                        this.report.on('error', event => {
+                            this.report.off('error');
+                            this.report.off('rendered');
+
+                            this.areVisualsRendered = false
+                            reject(event.detail);
+                        });
+
+                        this.report.on('rendered', () => {
+                            this.report.off('rendered');
+                            this.report.off('error');
+
+                            this.areVisualsRendered = true
+                            resolve(this.report);
+                        });
+                    });
+
+                    try {
+                        await this.report.render();
+                    } catch (reason) {
+                        console.log('error', reason);
+
+                        throw reason;
+                    }
+
+                    try {
+                        await complete
+
+                        return this.areVisualsRendered
+                    } catch (reason) {
+                        console.log('error', reason);
+
+                        throw reason;
+                    }
+                },
+                getPageSize() {
+                    console.log('getting page size');
+
+                    if (!this.activePage) {
+                        throw new Error('no active page to get size of');
+                    }
+
+                    return {
+                        ...{
+                            height: 0,
+                            width: 0,
+                        },
+                        ...this.activePage.defaultSize,
+                    };
+                }
+            };
+
+            reportRenderer.addConfig({
+                embedUrl: 'https://app.powerbi.com/reportEmbed',
+                permissions: PbiClient.models.Permissions.Read,
+                areVisualsRendered: false,
+                settings: {
+                    visualRenderedEvents: true,
+                    customLayout: {
+                        displayOption: PbiClient.models.DisplayOption.FitToPage,
+                        type: PbiClient.models.PageSizeType.Widescreen,
+                    },
+                    panes: {
+                        bookmarks: {
+                            visible: false,
+                        },
+                        fields: {
+                            expanded: false,
+                            visible: false,
+                        },
+                        filters: {
+                            expanded: false,
+                            visible: false,
+                        },
+                        pageNavigation: {
+                            visible: false,
+                        },
+                        selection: {
+                            visible: false,
+                        },
+                        syncSlicers: {
+                            visible: false,
+                        },
+                        visualizations: {
+                            expanded: false,
+                            visible: false,
+                        },
+                    },
+                },
+                tokenType: PbiClient.models.TokenType.Aad,
+                type: 'report',
+                viewMode: PbiClient.models.ViewMode.View,
+            });
+
+            window.reportRenderer = reportRenderer;
+
+            console.log('ready');
+        </script>
+    </body>
+</html>

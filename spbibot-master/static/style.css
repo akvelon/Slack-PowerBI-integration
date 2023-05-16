@@ -1,0 +1,455 @@
+html,
+body {
+  overflow-x: hidden;
+}
+
+body {
+  background-color: #ffffff;
+  color: #2e3440;
+  font-family: Inter;
+  font: Inter;
+  height: 100vh;
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+a,
+span {
+  font-family: Inter;
+  font: Inter;
+  font-style: normal;
+  letter-spacing: 0em;
+  margin-block-end: 0px;
+  margin-block-start: 0px;
+  margin-inline-end: 0px;
+  margin-inline-start: 0px;
+}
+
+h2 {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 72px;
+}
+
+h1 {
+  font-size: 96px;
+  font-weight: 700;
+  line-height: 116px;
+}
+
+h3 {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 42px;
+}
+
+h4 {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 27px;
+}
+
+h5 {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 27px;
+}
+
+a {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 27px;
+  text-align: center;
+  color: #767676;
+  text-decoration: none;
+}
+
+p {
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26px;
+  color: #767676;
+}
+
+.main {
+  background-color: #fff8ee;
+  padding-bottom: 60px;
+}
+
+.guide {
+  background-color: #ffffff;
+  padding-top: 39px;
+  padding-bottom: 100px;
+}
+
+.guideTitle {
+  text-align: center;
+}
+
+.guideRow {
+  margin-top: 86px;
+  justify-content: center;
+}
+
+.guideDescription {
+  max-width: 496px;
+}
+
+.guideDescriptionRight {
+  margin-left: 128px;
+}
+
+.guideNumberRight {
+  margin-bottom: -190px;
+  margin-left: -65px;
+}
+
+.guideDescription > h2 {
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+  text-align: left;
+}
+
+.guideDescription > ul > li > p {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 27px;
+}
+
+.guideDescription > ul > li > p > a {
+  color: #3498eb;
+}
+
+.guideDescription > ul > li {
+  margin-top: 8px;
+}
+
+.guideDescription > ul {
+  color: #767676;
+  font-weight: 700;
+  padding-left: 20px;
+  margin-left: 0px;
+}
+
+.note {
+  background-color: #eeeeee;
+  border-radius: 15px;
+  padding: 10px;
+  margin-top: 24px;
+  margin-bottom: 24px;
+}
+
+.youtubeButton {
+  background-color: #eeeeee;
+  width: 216px;
+  height: 43px;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-top: 24px;
+}
+
+.youtubeButton > div {
+  justify-content: center;
+  padding-top: 8px;
+}
+
+.youtubeButton > div > h4 {
+  margin-left: 8px;
+}
+
+.shareFooter {
+  height: 366px;
+  background-color: #111111;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.shareFooterDescription {
+  color: #ffffff;
+  font-size: 36px;
+  font-weight: 600;
+  line-height: 54px;
+  max-width: 624px;
+  padding-bottom: 40px;
+  padding-top: 72px;
+  text-align: center;
+}
+
+.footer {
+  background-color: #2e3440;
+  min-height: 93px;
+}
+
+.footerContainer {
+  padding-top: 32px;
+}
+
+.footerLinksContainer {
+  width: 100%;
+  text-align: center;
+}
+
+.link {
+  margin-right: 27px;
+}
+
+.footerLogo {
+  height: 35px;
+  width: 216px;
+  margin-top: -5px;
+  cursor: pointer;
+}
+
+.contact {
+  color: #ffffff;
+}
+
+.mainIllustration {
+  margin-left: 10%;
+  margin-right: 10%;
+  min-width: 300px;
+  width: 50%;
+}
+
+.slackLogoMain {
+  height: 26px;
+  margin-right: 10px;
+  margin-top: 8px;
+  width: 26px;
+}
+
+.infoMainContainer {
+  margin-left: 15%;
+  padding-top: 82px;
+}
+
+.infoIntegration {
+  margin-bottom: 40px;
+  margin-top: 8px;
+  max-width: 300px;
+  padding: 0px;
+}
+
+.slackLogoRow {
+  margin-bottom: 15px;
+}
+
+.infoMainDescription {
+  margin-top: 70px;
+  min-width: 410px;
+}
+
+.flexContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.flexRow {
+  display: flex;
+  flex-direction: row;
+}
+
+.addToSlackButton {
+  background-color: #ff820f;
+  border-radius: 10px;
+  cursor: pointer;
+  height: 74px;
+  width: 260px;
+}
+
+.addToSlackButtonDark {
+  background-color: #2e3440;
+}
+
+.addToSlackButton > .flexRow > p {
+  color: #ffffff;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 0em;
+  margin-top: 24px;
+  text-align: left;
+}
+
+.addToSlackButtonSlackLogo {
+  height: 34px;
+  margin-left: 32px;
+  margin-right: 14px;
+  margin-top: 20px;
+  width: 34px;
+}
+
+.featuresContainer {
+  margin-top: 120px;
+  justify-content: center;
+}
+
+.featureDescription {
+  width: 276px;
+  margin-right: 48px;
+  text-align: center;
+}
+
+.featureDescription > h2 {
+  margin-top: 28px;
+  margin-bottom: 24px;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 32px;
+}
+
+.modal {
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.3);
+  display: none;
+  height: 100%;
+  left: 0;
+  overflow: auto;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+.modal-content {
+  margin: 15% auto;
+  width: 600px;
+  z-index: 2;
+}
+
+.close {
+  color: #ffffff;
+  float: right;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.footerMobile {
+  display: none;
+}
+
+/* Mobile */
+@media screen and (max-width: 1000px) {
+  .flexContainer {
+    flex-direction: column;
+  }
+
+  .infoMainDescription {
+    align-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 0;
+    text-align: -webkit-center;
+  }
+
+  .infoMainContainer {
+    margin-left: 0;
+    padding-top: 40px;
+    text-align: -webkit-center;
+  }
+
+  h1 {
+    font-size: 76px;
+    line-height: 96px;
+  }
+
+  .slackLogoRow {
+    width: 100%;
+    margin-left: 50px;
+  }
+
+  .featuresContainer {
+    margin-top: 0;
+  }
+
+  .featureDescription {
+    width: 80%;
+    padding-left: 10%;
+    padding-top: 50px;
+  }
+
+  .mainIllustration {
+    width: 100%;
+    margin: 0;
+  }
+
+  .infoIntegration {
+    margin-bottom: 20px;
+  }
+
+  .footerLogo {
+    display: none;
+  }
+
+  .footerLinksContainer {
+    margin-top: 10px;
+  }
+
+  .footerContainer {
+    text-align: -webkit-center;
+    padding: 20px;
+  }
+
+  .guide {
+    width: 90%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .guideDescription {
+    max-width: 90%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .guideRow {
+    margin-top: 20px;
+  }
+
+  .guideRow > img {
+    display: none;
+  }
+
+  .guideDescriptionRight {
+    margin-left: 0px;
+  }
+
+  .guideNumberRight {
+    margin-left: -20px;
+  }
+
+  .footerMobile {
+    background-color: #2e3440;
+    height: 60px;
+    display: block;
+    text-align: -webkit-center;
+  }
+
+  .footerLogoMobile {
+    height: 35px;
+    width: 216px;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+}

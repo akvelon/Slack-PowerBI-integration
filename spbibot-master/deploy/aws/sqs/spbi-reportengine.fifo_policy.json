@@ -1,0 +1,13 @@
+{
+  "Version": "2008-10-17",
+  "Statement": [
+    {
+      "Action": "SQS:*",
+      "Effect": "Allow",
+      "Principal": {
+        "AWS": "arn:aws:iam:::user/staging"
+      },
+      "Resource": "arn:aws:sqs:us-east-2::spbi-reportengine.fifo"
+    }
+  ]
+}
